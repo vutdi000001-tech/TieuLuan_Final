@@ -196,9 +196,9 @@ def predict():
                 })
 
         # ----------------------------------------------------------------------
-        # CHƯƠNG 3: MẠNG NƠ-RON TÍCH CHẬP (CNN)
+        # MẠNG NƠ-RON TÍCH CHẬP (CNN - 1D & 2D)
         # ----------------------------------------------------------------------
-        elif chapter == 'chuong3':
+        elif chapter in ['cnn', 'chuong3']:
             cnn_mode = data.get('cnn_mode', 'conv1d')
             if cnn_mode == 'conv1d':
                 glucose = float(data.get('blood_glucose_level', 130))
@@ -212,7 +212,7 @@ def predict():
                 
                 return jsonify({
                     'success': True,
-                    'chapter': 'chuong3',
+                    'model_category': 'CNN',
                     'type': 'cnn_inference',
                     'model_used': 'Deep 1D-CNN (Conv1D + BatchNorm + MaxPool1D)',
                     'prediction': "DƯƠNG TÍNH" if prob >= 0.5 else "ÂM TÍNH",
@@ -225,7 +225,7 @@ def predict():
                 kernel_type = data.get('kernel_type', 'Sobel_Vertical')
                 return jsonify({
                     'success': True,
-                    'chapter': 'chuong3',
+                    'model_category': 'CNN',
                     'type': 'conv2d_filter',
                     'model_used': f'Toán tử Tích Chập Conv2D ({kernel_type})',
                     'prediction': 'Phát hiện biên cạnh thành công (Spatial Convolution Applied)',
@@ -234,10 +234,10 @@ def predict():
                 })
 
         # ----------------------------------------------------------------------
-        # CHƯƠNG 4: CHUỖI THỜI GIAN RNN & LSTM (VN-INDEX & GIÁ VÀNG SJC)
+        # MẠNG HỒI QUY RNN & LSTM (VN-INDEX & GIÁ VÀNG SJC)
         # ----------------------------------------------------------------------
-        elif chapter == 'chuong4':
-            market = data.get('market', 'vnindex')
+        elif chapter in ['rnn_lstm', 'chuong4']:
+            market = data.get('market', 'gold')
             arch = data.get('architecture', 'Vanilla LSTM')
             
             today = datetime.now()
@@ -344,7 +344,7 @@ def predict():
 
             return jsonify({
                 'success': True,
-                'chapter': 'chuong4',
+                'model_category': 'RNN_LSTM',
                 'type': 'chart',
                 'model_used': f"{arch} (TensorFlow Custom Layer)",
                 'prediction': result_title,
@@ -361,10 +361,10 @@ def predict():
             })
 
         # ----------------------------------------------------------------------
-        # CHƯƠNG 5: KNOWLEDGE GRAPH VÀ RAG (HỎI ĐÁP LAI)
+        # ĐỒ THỊ TRI THỨC VÀ RAG (HỎI ĐÁP LAI)
         # ----------------------------------------------------------------------
-        elif chapter == 'chuong5':
-            query = data.get('query', 'Biên độ sàn HOSE là bao nhiêu?')
+        elif chapter in ['kg_rag', 'chuong5']:
+            query = data.get('query', 'Vàng miếng SJC chịu sự quản lý theo nghị định nào?')
             
             # 1. Truy vấn đồ thị tri thức
             matched_triples = []
@@ -392,7 +392,7 @@ def predict():
             
             return jsonify({
                 'success': True,
-                'chapter': 'chuong5',
+                'model_category': 'KG_RAG',
                 'type': 'rag_qa',
                 'model_used': 'Hybrid Knowledge Graph + TF-IDF Vector RAG',
                 'query': query,
@@ -404,9 +404,9 @@ def predict():
             })
 
         # ----------------------------------------------------------------------
-        # CHƯƠNG 6: HỆ ĐA AGENT (MULTI-AGENT SYSTEM)
+        # HỆ ĐA AGENT (MULTI-AGENT SYSTEM)
         # ----------------------------------------------------------------------
-        else: # chuong6 (Default)
+        else: # multi_agent (Default)
             gender = data.get('gender', 'Male')
             age = float(data.get('age', 50))
             hypertension = int(data.get('hypertension', 0))
@@ -497,7 +497,7 @@ def predict():
             
             return jsonify({
                 'success': True,
-                'chapter': 'chuong6',
+                'model_category': 'Multi_Agent',
                 'type': 'multi_agent',
                 'model_used': 'Hội Đồng Đa Agent (5 Diagnostic Agents + Rule Engine + Safety Advisor)',
                 'prediction': f"Quyết định: {'DƯƠNG TÍNH' if weighted_prob >= 0.5 else 'ÂM TÍNH'}",
@@ -518,3 +518,4 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print(f"Cổng Webapp Tiểu Luận Final đang khởi chạy trên port {port}...")
     app.run(host='0.0.0.0', port=port, debug=True)
+

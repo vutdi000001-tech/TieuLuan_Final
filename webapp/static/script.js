@@ -1,86 +1,40 @@
-let currentChapter = 'chuong6';
+let currentModel = 'multi_agent';
 let predictionChart = null;
 
 // =============================================================================
-// CẤU HÌNH THAM SỐ VÀ GIAO DIỆN CỦA TỪNG CHƯƠNG
+// CẤU HÌNH THAM SỐ VÀ GIAO DIỆN CỦA TỪNG MÔ HÌNH (ĐÃ LOẠI BỎ CHƯƠNG 1, 2)
 // =============================================================================
-const chapterConfigs = {
-    chuong1: {
-        subtaskLabel: 'Hàm Logic Kiểm Chứng',
+const modelConfigs = {
+    cnn: {
+        id: 'cnn',
+        subtaskLabel: 'Nhiệm Vụ Mạng Tích Chập (CNN)',
         subtasks: [
-            { id: 'XOR', name: 'Hàm Logic XOR (Bất Khả Ly Tuyến Tính - Rào Cản Minsky)' },
-            { id: 'AND', name: 'Hàm Logic AND (Khả Ly Tuyến Tính)' },
-            { id: 'OR', name: 'Hàm Logic OR (Khả Ly Tuyến Tính)' }
-        ],
-        modelLabel: 'Kiến Trúc Mạng Nơ-ron',
-        models: [
-            { id: 'perceptron', name: 'Perceptron Đơn Lớp (1957)', checked: false },
-            { id: 'mlp', name: 'Multi-Layer Perceptron (MLP)', checked: true }
-        ],
-        inputs: [
-            { id: 'x1', label: 'Tín hiệu đầu vào x1', type: 'select', options: [{ val: 1, text: '1 (Kích hoạt)' }, { val: 0, text: '0 (Không kích hoạt)' }] },
-            { id: 'x2', label: 'Tín hiệu đầu vào x2', type: 'select', options: [{ val: 1, text: '1 (Kích hoạt)' }, { val: 0, text: '0 (Không kích hoạt)' }] }
-        ],
-        info: 'Chương 1 kiểm chứng định lý hội tụ Novikoff và sự bất lực của Perceptron đơn lớp trước bài toán XOR, giải quyết triệt để nhờ tầng ẩn phi tuyến của MLP.'
-    },
-
-    chuong2: {
-        subtaskLabel: 'Bài Toán Học Máy Cổ Điển',
-        subtasks: [
-            { id: 'diabetes', name: 'Phân loại Bệnh Tiểu Đường (diabetes_prediction_dataset.csv)' },
-            { id: 'housing', name: 'Hồi quy Định Giá Nhà Đất Việt Nam (vietnam_housing_dataset.csv)' }
-        ],
-        modelLabel: 'Thuật Toán Học Máy',
-        models: [
-            { id: 'Logistic Regression', name: 'Logistic / Linear', checked: false },
-            { id: 'Random Forest', name: 'Random Forest', checked: true },
-            { id: 'XGBoost', name: 'XGBoost', checked: false },
-            { id: 'SVM', name: 'SVM (RBF Kernel)', checked: false }
-        ],
-        inputsDiabetes: [
-            { id: 'blood_glucose_level', label: 'Đường huyết (mg/dL)', type: 'number', val: 145 },
-            { id: 'HbA1c_level', label: 'Chỉ số HbA1c (%)', type: 'number', step: '0.1', val: 6.8 },
-            { id: 'bmi', label: 'Chỉ số BMI (kg/m²)', type: 'number', step: '0.1', val: 28.5 },
-            { id: 'age', label: 'Độ tuổi', type: 'number', val: 52 },
-            { id: 'hypertension', label: 'Tăng huyết áp', type: 'select', options: [{ val: 0, text: 'Không' }, { val: 1, text: 'Có' }] }
-        ],
-        inputsHousing: [
-            { id: 'area', label: 'Diện tích nhà (m²)', type: 'number', val: 85 },
-            { id: 'floors', label: 'Số tầng', type: 'number', val: 3 },
-            { id: 'bedrooms', label: 'Số phòng ngủ', type: 'number', val: 3 },
-            { id: 'frontage', label: 'Mặt tiền (m)', type: 'number', step: '0.5', val: 4.5 },
-            { id: 'access_road', label: 'Đường vào (m)', type: 'number', step: '0.5', val: 5.0 }
-        ]
-    },
-
-    chuong3: {
-        subtaskLabel: 'Bài Toán Mạng Nơ-ron Tích Chập (CNN)',
-        subtasks: [
-            { id: 'conv1d', name: 'Deep 1D-CNN Phân Loại Đặc Trưng Y Tế' },
+            { id: 'conv1d', name: 'Deep 1D-CNN Trích Xuất Đặc Trưng Y Sinh' },
             { id: 'conv2d', name: 'Toán Tử Tích Chập 2D (Sobel Filter Trích Xuất Biên Cạnh)' }
         ],
-        modelLabel: 'Bộ Lọc / Kiến Trúc CNN',
+        modelLabel: 'Kiến Trúc / Bộ Lọc Tích Chập',
         models: [
-            { id: 'Deep_1D_CNN', name: 'Deep 1D-CNN (Keras/TF)', checked: true },
-            { id: 'Sobel_Vertical', name: 'Sobel Dọc (NumPy)', checked: false },
-            { id: 'Sobel_Horizontal', name: 'Sobel Ngang (NumPy)', checked: false }
+            { id: 'Deep_1D_CNN', name: 'Deep 1D-CNN (Conv1D + MaxPool)', checked: true },
+            { id: 'Sobel_Vertical', name: 'Sobel Dọc (NumPy Kernel 3x3)', checked: false },
+            { id: 'Sobel_Horizontal', name: 'Sobel Ngang (NumPy Kernel 3x3)', checked: false }
         ],
         inputsConv1D: [
-            { id: 'blood_glucose_level', label: 'Đường huyết (mg/dL)', type: 'number', val: 150 },
+            { id: 'blood_glucose_level', label: 'Đường huyết đói (mg/dL)', type: 'number', val: 155 },
             { id: 'HbA1c_level', label: 'Chỉ số HbA1c (%)', type: 'number', step: '0.1', val: 7.0 },
-            { id: 'bmi', label: 'Chỉ số BMI (kg/m²)', type: 'number', step: '0.1', val: 29.0 }
+            { id: 'bmi', label: 'Chỉ số BMI (kg/m²)', type: 'number', step: '0.1', val: 29.5 }
         ],
         inputsConv2D: []
     },
 
-    chuong4: {
-        subtaskLabel: 'Thị Trường Tài Chính Chuỗi Thời Gian',
+    rnn_lstm: {
+        id: 'rnn_lstm',
+        subtaskLabel: 'Chuỗi Thời Gian Thị Trường Tài Chính',
         subtasks: [
-            { id: 'vnindex', name: 'Chỉ Số Chứng Khoán VN-Index (HOSE_DLY_VNINDEX1D.csv)' },
             { id: 'gold', name: 'Giá Vàng SJC Việt Nam (vietnam_gold_price.csv)' },
+            { id: 'vnindex', name: 'Chỉ Số Chứng Khoán VN-Index (HOSE_DLY_VNINDEX1D.csv)' },
             { id: 'amazon', name: 'Cổ Phiếu Amazon (AMZN.csv)' }
         ],
-        modelLabel: 'Kiến Trúc Mạng Hồi Quy (TensorFlow Custom Layer)',
+        modelLabel: 'Kiến Trúc Mạng Nơ-ron Hồi Quy',
         models: [
             { id: 'Vanilla LSTM', name: 'Vanilla LSTM', checked: true },
             { id: 'Stacked LSTM', name: 'Stacked LSTM', checked: false },
@@ -88,14 +42,15 @@ const chapterConfigs = {
             { id: 'SimpleRNN', name: 'SimpleRNN', checked: false }
         ],
         inputs: [],
-        info: 'Mô hình sẽ tự động trích xuất chuỗi lịch sử 30 phiên giao dịch gần nhất từ file dữ liệu thực tế tại Việt Nam để dự báo đường xu hướng 7 phiên tiếp theo.'
+        info: 'Mô hình tự động trích xuất chuỗi lịch sử 30 phiên giao dịch gần nhất từ file dữ liệu thực tế để dự báo đường xu hướng 7 phiên tiếp theo.'
     },
 
-    chuong5: {
+    kg_rag: {
+        id: 'kg_rag',
         subtaskLabel: 'Miền Tri Thức Hỏi Đáp',
         subtasks: [
-            { id: 'ck', name: 'Miền Chứng Khoán Việt Nam (HOSE, VN30, P/E)' },
             { id: 'gold', name: 'Miền Giá Vàng Việt Nam (SJC, 9999, Nghị định 24)' },
+            { id: 'ck', name: 'Miền Chứng Khoán Việt Nam (HOSE, VN30, P/E)' },
             { id: 'med', name: 'Miền Y Tế & Tiêu Chuẩn ADA Tiểu Đường' }
         ],
         modelLabel: 'Cơ Chế Truy Xuất Tri Thức',
@@ -103,16 +58,17 @@ const chapterConfigs = {
             { id: 'Hybrid_KG_RAG', name: 'Đồ Thị Tri Thức + Vector RAG (TF-IDF Cosine)', checked: true }
         ],
         inputs: [
-            { id: 'query', label: 'Câu hỏi truy vấn chuyên sâu', type: 'text', val: 'Quy định biên độ sàn HOSE là bao nhiêu và VN30 gồm những cổ phiếu nào?' }
+            { id: 'query', label: 'Câu hỏi truy vấn chuyên sâu', type: 'text', val: 'Vàng miếng SJC chịu sự quản lý theo nghị định nào và yếu tố nào chi phối giá vàng?' }
         ]
     },
 
-    chuong6: {
-        subtaskLabel: 'Mục Tiêu Hội Đồng Đa Agent',
+    multi_agent: {
+        id: 'multi_agent',
+        subtaskLabel: 'Hệ Thống Hội Đồng Đa Agent (MAS)',
         subtasks: [
             { id: 'council', name: 'Hội Đồng 5 Diagnostic Agents + Rule Engine + Safety Advisor' }
         ],
-        modelLabel: 'Cơ Chế Bỏ Phiếu Hội Đồng (MAS)',
+        modelLabel: 'Cơ Chế Bỏ Phiếu Hội Đồng',
         models: [
             { id: 'Weighted_Consensus', name: 'Đồng Thuận Có Trọng Số (AUC-Weighted)', checked: true }
         ],
@@ -130,14 +86,48 @@ const chapterConfigs = {
 };
 
 // =============================================================================
-// CHUYỂN ĐỔI CHƯƠNG VÀ CẬP NHẬT GIAO DIỆN FORM
+// RESET KẾT QUẢ CŨ (NGĂN CHẶN LỖI HIỂN THỊ CHÉO GIỮA CÁC CHỨC NĂNG)
 // =============================================================================
-function setupChapter(chKey) {
-    currentChapter = chKey;
-    const cfg = chapterConfigs[chKey];
+function resetResults() {
+    const resultContainer = document.getElementById('result-container');
+    const chartContainer = document.getElementById('chart-container');
+    const ragDetails = document.getElementById('rag-details');
+    const agentDetails = document.getElementById('agent-details');
+    const explanationBox = document.getElementById('explanation-box');
+
+    // Ẩn tất cả các khối
+    resultContainer.classList.add('hidden');
+    chartContainer.classList.add('hidden');
+    ragDetails.classList.add('hidden');
+    agentDetails.classList.add('hidden');
+    if (explanationBox) {
+        explanationBox.classList.add('hidden');
+        explanationBox.innerHTML = '';
+    }
+
+    // Xóa trắng toàn bộ nội dung HTML cũ bên trong
+    ragDetails.innerHTML = '';
+    agentDetails.innerHTML = '';
+
+    // Hủy chart cũ nếu đang chạy
+    if (predictionChart) {
+        predictionChart.destroy();
+        predictionChart = null;
+    }
+}
+
+// =============================================================================
+// CHUYỂN ĐỔI MÔ HÌNH VÀ CẬP NHẬT FORM
+// =============================================================================
+function setupModel(modelKey) {
+    currentModel = modelKey;
+    const cfg = modelConfigs[modelKey];
+    if (!cfg) return;
+
+    // Reset sạch kết quả cũ
+    resetResults();
 
     // Cập nhật Subtask Dropdown
-    const subtaskGroup = document.getElementById('subtask-group');
     const subtaskSelect = document.getElementById('subtask-select');
     const subtaskLabel = document.getElementById('subtask-label');
 
@@ -156,7 +146,7 @@ function setupChapter(chKey) {
     modelLabel.textContent = cfg.modelLabel;
     modelRadios.innerHTML = '';
 
-    cfg.models.forEach((m, idx) => {
+    cfg.models.forEach(m => {
         modelRadios.innerHTML += `
             <label class="radio-card">
                 <input type="radio" name="model_choice" value="${m.id}" ${m.checked ? 'checked' : ''} required>
@@ -167,12 +157,6 @@ function setupChapter(chKey) {
 
     // Render dynamic inputs
     renderInputsForCurrentState();
-
-    // Ẩn kết quả cũ
-    document.getElementById('result-container').classList.add('hidden');
-    document.getElementById('chart-container').classList.add('hidden');
-    document.getElementById('rag-details').classList.add('hidden');
-    document.getElementById('agent-details').classList.add('hidden');
 }
 
 function renderInputsForCurrentState() {
@@ -180,35 +164,28 @@ function renderInputsForCurrentState() {
     dynamicInputs.innerHTML = '';
 
     const subtaskVal = document.getElementById('subtask-select').value;
-    const cfg = chapterConfigs[currentChapter];
+    const cfg = modelConfigs[currentModel];
+    if (!cfg) return;
 
     let inputsToRender = [];
 
-    if (currentChapter === 'chuong1') {
-        inputsToRender = cfg.inputs;
-        if (cfg.info) {
-            dynamicInputs.innerHTML += `<div class="info-text">${cfg.info}</div>`;
-        }
-    } else if (currentChapter === 'chuong2') {
-        inputsToRender = (subtaskVal === 'housing') ? cfg.inputsHousing : cfg.inputsDiabetes;
-    } else if (currentChapter === 'chuong3') {
+    if (currentModel === 'cnn') {
         inputsToRender = (subtaskVal === 'conv1d') ? cfg.inputsConv1D : cfg.inputsConv2D;
         if (subtaskVal === 'conv2d') {
             dynamicInputs.innerHTML += `<div class="info-text">Mô phỏng phép nhân chập ma trận 3x3 Sobel trượt qua ảnh 5x5 để làm nổi bật đường biên theo phương giải tích.</div>`;
         }
-    } else if (currentChapter === 'chuong4') {
+    } else if (currentModel === 'rnn_lstm') {
         dynamicInputs.innerHTML += `<div class="info-text">${cfg.info}</div>`;
-    } else if (currentChapter === 'chuong5') {
+    } else if (currentModel === 'kg_rag') {
         inputsToRender = cfg.inputs;
-        // Gợi ý câu hỏi mẫu khi đổi subtask
-        if (subtaskVal === 'ck') {
-            inputsToRender[0].val = 'Quy định biên độ sàn HOSE là bao nhiêu và VN30 gồm những cổ phiếu nào?';
-        } else if (subtaskVal === 'gold') {
+        if (subtaskVal === 'gold') {
             inputsToRender[0].val = 'Vàng miếng SJC chịu sự quản lý theo nghị định nào và yếu tố nào chi phối giá vàng?';
+        } else if (subtaskVal === 'ck') {
+            inputsToRender[0].val = 'Quy định biên độ sàn HOSE là bao nhiêu và VN30 gồm những cổ phiếu nào?';
         } else {
             inputsToRender[0].val = 'Mức đường huyết lúc đói bao nhiêu thì được chẩn đoán mắc bệnh đái tháo đường?';
         }
-    } else if (currentChapter === 'chuong6') {
+    } else if (currentModel === 'multi_agent') {
         inputsToRender = cfg.inputs;
     }
 
@@ -231,15 +208,16 @@ function renderInputsForCurrentState() {
 }
 
 function onSubtaskChange() {
+    resetResults();
     renderInputsForCurrentState();
 }
 
-// Bắt sự kiện chuyển tab chương
-document.querySelectorAll('.chapter-btn').forEach(btn => {
+// Bắt sự kiện chuyển tab mô hình
+document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-        document.querySelectorAll('.chapter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
-        setupChapter(this.getAttribute('data-chapter'));
+        setupModel(this.getAttribute('data-model'));
     });
 });
 
@@ -257,22 +235,23 @@ document.getElementById('prediction-form').addEventListener('submit', async func
     const chartContainer = document.getElementById('chart-container');
     const ragDetails = document.getElementById('rag-details');
     const agentDetails = document.getElementById('agent-details');
+    const explanationBox = document.getElementById('explanation-box');
 
-    // UI Loading state
+    // Reset sạch sẽ tất cả kết quả cũ trước khi thực hiện request mới
+    resetResults();
+
+    // Bật Loading
     submitBtn.classList.add('loading');
     submitBtn.disabled = true;
-    resultContainer.classList.add('hidden');
-    chartContainer.classList.add('hidden');
-    ragDetails.classList.add('hidden');
-    agentDetails.classList.add('hidden');
 
     const subtask = document.getElementById('subtask-select').value;
     const modelChecked = document.querySelector('input[name="model_choice"]:checked');
     const modelChoice = modelChecked ? modelChecked.value : '';
 
-    // Thu thập payload theo từng chương
+    // Thu thập payload
     const payload = {
-        chapter: currentChapter,
+        model_category: currentModel,
+        chapter: currentModel, // tương thích backend
         subtask: subtask,
         model_name: modelChoice,
         model_type: modelChoice,
@@ -284,12 +263,10 @@ document.getElementById('prediction-form').addEventListener('submit', async func
         payload[el.id] = el.value;
     });
 
-    if (currentChapter === 'chuong1') {
-        payload.gate = subtask;
-    } else if (currentChapter === 'chuong3') {
+    if (currentModel === 'cnn') {
         payload.cnn_mode = subtask;
         payload.kernel_type = modelChoice;
-    } else if (currentChapter === 'chuong4') {
+    } else if (currentModel === 'rnn_lstm') {
         payload.market = subtask;
     }
 
@@ -304,18 +281,21 @@ document.getElementById('prediction-form').addEventListener('submit', async func
 
         setTimeout(() => {
             if (data.success) {
+                // Đảm bảo reset lại trước khi bật khối tương ứng
+                resetResults();
+
                 resultValue.textContent = data.prediction;
                 resultConfidence.textContent = data.confidence !== undefined ? data.confidence : '--';
                 modelBadge.textContent = data.model_used || 'AI Model';
 
-                // 1. Dạng biểu đồ chuỗi thời gian (Chương 4)
+                // TRƯỜNG HỢP 1: Mạng Hồi Quy RNN / LSTM (Hiển thị biểu đồ chuỗi thời gian)
                 if (data.type === 'chart' && data.chartData) {
                     chartContainer.classList.remove('hidden');
                     renderTimeSeriesChart(data.chartData, data.unit || 'Giá trị');
                 }
 
-                // 2. Dạng RAG & Knowledge Graph (Chương 5)
-                if (data.type === 'rag_qa') {
+                // TRƯỜNG HỢP 2: Knowledge Graph & RAG (Hiển thị căn cứ tri thức)
+                else if (data.type === 'rag_qa') {
                     ragDetails.classList.remove('hidden');
                     let factsHtml = data.kg_facts.map(f => `<li><code>${f}</code></li>`).join('');
                     let docsHtml = data.sources.map(s => `
@@ -340,8 +320,8 @@ document.getElementById('prediction-form').addEventListener('submit', async func
                     `;
                 }
 
-                // 3. Dạng Hệ Đa Agent (Chương 6)
-                if (data.type === 'multi_agent') {
+                // TRƯỜNG HỢP 3: Hệ Đa Agent - MAS (Hiển thị bảng bỏ phiếu 5 Agents & Thẩm định)
+                else if (data.type === 'multi_agent') {
                     agentDetails.classList.remove('hidden');
 
                     let rows = '';
@@ -397,10 +377,12 @@ document.getElementById('prediction-form').addEventListener('submit', async func
                     `;
                 }
 
-                // 4. Giải thích thêm nếu có
-                if (data.explanation) {
-                    ragDetails.classList.remove('hidden');
-                    ragDetails.innerHTML = `<div class="citation-box" style="border-left-color: #2563eb;">${data.explanation}</div>`;
+                // TRƯỜNG HỢP 4: Các giải thích phụ (ví dụ Conv1D hoặc Conv2D)
+                if (data.explanation && data.type !== 'rag_qa' && data.type !== 'multi_agent') {
+                    if (explanationBox) {
+                        explanationBox.classList.remove('hidden');
+                        explanationBox.innerHTML = `💡 ${data.explanation}`;
+                    }
                 }
 
                 resultContainer.classList.remove('hidden');
@@ -410,7 +392,7 @@ document.getElementById('prediction-form').addEventListener('submit', async func
 
             submitBtn.classList.remove('loading');
             submitBtn.disabled = false;
-        }, 300);
+        }, 200);
 
     } catch (err) {
         console.error('Lỗi kết nối:', err);
@@ -448,9 +430,10 @@ function renderTimeSeriesChart(chartData, unitLabel) {
                 {
                     label: 'Tương lai (Dự báo LSTM)',
                     data: chartData.future,
-                    borderColor: '#dc2626',
-                    borderWidth: 2.2,
-                    borderDash: [5, 5],
+                    borderColor: '#059669',
+                    backgroundColor: 'rgba(5, 150, 105, 0.12)',
+                    borderWidth: 2.4,
+                    borderDash: [5, 4],
                     tension: 0.3,
                     fill: false,
                     pointRadius: 3
@@ -463,24 +446,29 @@ function renderTimeSeriesChart(chartData, unitLabel) {
             plugins: {
                 legend: {
                     position: 'top',
-                    labels: { color: '#0f172a', font: { weight: '600', size: 11 } }
+                    labels: { boxWidth: 12, font: { size: 11, weight: '600' } }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(c) {
+                            return `${c.dataset.label}: ${c.raw !== null ? c.raw.toLocaleString() : '--'} ${unitLabel}`;
+                        }
+                    }
                 }
             },
             scales: {
                 x: {
-                    title: { display: true, text: 'Phiên Giao Dịch', color: '#64748b', font: { size: 10 } },
-                    ticks: { color: '#64748b', font: { size: 9 }, maxTicksLimit: 12 },
-                    grid: { color: 'rgba(0,0,0,0.04)' }
+                    grid: { display: false },
+                    ticks: { maxTicksLimit: 12, font: { size: 10 } }
                 },
                 y: {
-                    title: { display: true, text: unitLabel, color: '#64748b', font: { size: 10 } },
-                    ticks: { color: '#64748b', font: { size: 10 } },
-                    grid: { color: 'rgba(0,0,0,0.06)' }
+                    grid: { color: '#f1f5f9' },
+                    ticks: { font: { size: 10 } }
                 }
             }
         }
     });
 }
 
-// Khởi tạo tab mặc định khi tải trang
-setupChapter('chuong6');
+// Khởi tạo mặc định với tab Hệ Đa Agent
+setupModel(currentModel);

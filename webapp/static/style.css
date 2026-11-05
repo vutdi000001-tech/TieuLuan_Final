@@ -5,7 +5,7 @@
     --accent: #059669;
     --warning: #d97706;
     --danger: #dc2626;
-    --bg-page: #f1f5f9;
+    --bg-page: #f8fafc;
     --bg-card: #ffffff;
     --text-main: #0f172a;
     --text-muted: #64748b;
@@ -15,6 +15,11 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Global Hidden Helper - Must override any display */
+.hidden {
+    display: none !important;
+}
 
 body {
     background-color: var(--bg-page);
@@ -29,7 +34,7 @@ body {
 
 .container {
     width: 100%;
-    max-width: 860px;
+    max-width: 880px;
 }
 
 .header-banner {
@@ -39,181 +44,176 @@ body {
 
 .header-banner h1 {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.8rem;
+    font-size: 1.85rem;
     font-weight: 800;
     color: #1e3a8a;
     margin-bottom: 0.4rem;
+    letter-spacing: -0.5px;
 }
 
 .header-banner p {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: var(--text-muted);
 }
 
 .glass-panel {
     background: var(--bg-card);
-    padding: 1.8rem;
+    padding: 2rem;
     border-radius: 20px;
     box-shadow: var(--shadow-soft);
     border: 1px solid var(--border);
 }
 
-/* Chapter Navigation Pills */
-.chapter-nav {
+/* Model Navigation Tabs */
+.model-nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
+    gap: 10px;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1.2rem;
     border-bottom: 1px solid var(--border);
 }
 
-.chapter-btn {
-    flex: 1 1 calc(33.333% - 8px);
-    min-width: 130px;
-    padding: 0.6rem 0.5rem;
+.tab-btn {
+    flex: 1 1 calc(25% - 10px);
+    min-width: 150px;
+    padding: 0.75rem 0.6rem;
     background: #f8fafc;
     border: 1px solid var(--border);
-    border-radius: 10px;
-    font-size: 0.8rem;
-    font-weight: 600;
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
     color: var(--text-muted);
     cursor: pointer;
     text-align: center;
     transition: all 0.2s ease;
 }
 
-.chapter-btn:hover {
+.tab-btn:hover {
     background: #eff6ff;
     border-color: #93c5fd;
     color: var(--primary);
+    transform: translateY(-1px);
 }
 
-.chapter-btn.active {
+.tab-btn.active {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
     border-color: transparent;
-    box-shadow: 0 4px 8px -2px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 4px 10px -2px rgba(37, 99, 235, 0.4);
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.1rem;
 }
 
-label {
+.form-group label {
     display: block;
-    margin-bottom: 0.4rem;
-    font-size: 0.76rem;
+    font-size: 0.86rem;
     font-weight: 700;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+    color: var(--text-main);
+    margin-bottom: 0.45rem;
 }
 
 select, input[type="text"], input[type="number"] {
     width: 100%;
-    padding: 0.65rem 0.8rem;
-    background: #f8fafc;
-    border: 1px solid var(--border);
+    padding: 0.7rem 0.9rem;
+    border: 1.5px solid var(--border);
     border-radius: 10px;
-    color: var(--text-main);
     font-size: 0.9rem;
-    outline: none;
+    color: var(--text-main);
+    background-color: #ffffff;
     transition: all 0.2s ease;
 }
 
-select:focus, input[type="text"]:focus, input[type="number"]:focus {
+select:focus, input:focus {
+    outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    background: #fff;
 }
 
+/* Radio Cards */
 .radio-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
 }
 
 .radio-card {
-    position: relative;
+    flex: 1 1 calc(50% - 8px);
+    min-width: 130px;
     cursor: pointer;
+    position: relative;
 }
 
 .radio-card input {
     position: absolute;
     opacity: 0;
+    cursor: pointer;
 }
 
-.card-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.6rem;
-    background: #f8fafc;
-    border: 1px solid var(--border);
+.radio-card .card-content {
+    display: block;
+    padding: 0.65rem 0.8rem;
+    border: 1.5px solid var(--border);
     border-radius: 10px;
-    font-size: 0.8rem;
+    background: #f8fafc;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-muted);
     text-align: center;
     transition: all 0.2s ease;
 }
 
-.radio-card:hover .card-content {
-    border-color: #93c5fd;
-    background: #eff6ff;
-}
-
-.radio-card input:checked ~ .card-content {
+.radio-card input:checked + .card-content {
     background: #eff6ff;
     border-color: var(--primary);
     color: var(--primary);
-    box-shadow: 0 0 0 1.5px var(--primary);
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
 }
 
+/* Dynamic Inputs Layout */
 .dynamic-inputs {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 12px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
 }
 
-.dynamic-inputs .input-item label {
-    font-size: 0.72rem;
-    margin-bottom: 0.25rem;
+.input-item {
+    display: flex;
+    flex-direction: column;
 }
 
-.dynamic-inputs .input-item input,
-.dynamic-inputs .input-item select {
-    padding: 0.55rem;
-    font-size: 0.88rem;
+.input-item label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
 }
 
 .info-text {
     grid-column: 1 / -1;
-    text-align: left;
-    color: #0369a1;
-    background: #e0f2fe;
+    background: #f0fdf4;
+    border-left: 4px solid var(--accent);
     padding: 0.75rem 1rem;
-    border-radius: 10px;
-    border: 1px solid #bae6fd;
+    border-radius: 0 8px 8px 0;
+    color: #166534;
     font-size: 0.85rem;
-    line-height: 1.4;
+    line-height: 1.45;
 }
 
+/* Chart Container */
 .chart-container {
     margin-top: 1.2rem;
     width: 100%;
-    height: 280px;
+    height: 300px;
 }
 
-.chart-container.hidden {
-    display: none;
-}
-
+/* Submit Button */
 .submit-btn {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.85rem;
     margin-top: 0.6rem;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
@@ -257,18 +257,15 @@ select:focus, input[type="text"]:focus, input[type="number"]:focus {
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+/* Result Container */
 .result-container {
-    margin-top: 1.5rem;
-    padding-top: 1.2rem;
+    margin-top: 1.6rem;
+    padding-top: 1.4rem;
     border-top: 1px solid var(--border);
 }
 
-.result-container.hidden {
-    display: none;
-}
-
 .result-container h3 {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     margin-bottom: 1rem;
     text-align: center;
     color: var(--text-main);
@@ -278,7 +275,7 @@ select:focus, input[type="text"]:focus, input[type="number"]:focus {
 .result-box {
     background: #f8fafc;
     border-radius: 14px;
-    padding: 1.2rem;
+    padding: 1.3rem;
     text-align: center;
     position: relative;
     border: 1px solid #e2e8f0;
@@ -288,7 +285,7 @@ select:focus, input[type="text"]:focus, input[type="number"]:focus {
     font-size: 1.45rem;
     font-weight: 800;
     color: var(--primary);
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.35rem;
 }
 
 .result-confidence {
@@ -310,9 +307,20 @@ select:focus, input[type="text"]:focus, input[type="number"]:focus {
     box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 
+.explanation-box {
+    margin-top: 0.8rem;
+    background: #eff6ff;
+    border-left: 4px solid var(--primary);
+    padding: 8px 12px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.84rem;
+    color: #1e3a8a;
+    text-align: left;
+}
+
 /* Custom Output Panels */
 .multi-agent-panel, .rag-panel {
-    margin-top: 1rem;
+    margin-top: 1.2rem;
     text-align: left;
     font-size: 0.85rem;
 }
@@ -320,19 +328,20 @@ select:focus, input[type="text"]:focus, input[type="number"]:focus {
 .agent-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 0.5rem;
+    margin-top: 0.6rem;
     font-size: 0.82rem;
 }
 
 .agent-table th, .agent-table td {
-    padding: 6px 10px;
+    padding: 7px 10px;
     border: 1px solid #e2e8f0;
     text-align: left;
 }
 
 .agent-table th {
     background: #f1f5f9;
-    font-weight: 600;
+    font-weight: 700;
+    color: #334155;
 }
 
 .badge-pos {
@@ -371,6 +380,6 @@ select:focus, input[type="text"]:focus, input[type="number"]:focus {
 }
 
 @media (max-width: 640px) {
-    .chapter-btn { flex: 1 1 100%; }
+    .tab-btn { flex: 1 1 100%; }
     .dynamic-inputs { grid-template-columns: 1fr; }
 }

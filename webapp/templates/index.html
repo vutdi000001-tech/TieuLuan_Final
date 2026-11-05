@@ -3,53 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Nghiên Cứu & Dự Đoán AI (Tiểu Luận Final)</title>
+    <title>Nền Tảng Thực Nghiệm & Dự Báo AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=final_1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=clean_mas_1">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <header class="header-banner">
-            <h1>CỔNG DỰ ĐOÁN & THỰC NGHIỆM AI</h1>
-            <p>Hệ thống toàn diện từ Lịch Sử AI, ML Cổ Điển, CNN, RNN/LSTM, Knowledge Graph + RAG đến Hệ Đa Agent</p>
+            <h1>NỀN TẢNG THỰC NGHIỆM & DỰ BÁO AI</h1>
+            <p>Mạng Tích Chập (CNN), Mạng Hồi Quy (RNN/LSTM), Knowledge Graph + RAG & Hệ Đa Agent (MAS)</p>
         </header>
 
         <main class="glass-panel">
-            <!-- Thanh Chọn Chương Nghiên Cứu -->
-            <div class="chapter-nav">
-                <button type="button" class="chapter-btn" data-chapter="chuong1">Chương 1: Lịch Sử AI (XOR)</button>
-                <button type="button" class="chapter-btn" data-chapter="chuong2">Chương 2: Học Máy Cổ Điển</button>
-                <button type="button" class="chapter-btn" data-chapter="chuong3">Chương 3: Mạng Tích Chập CNN</button>
-                <button type="button" class="chapter-btn" data-chapter="chuong4">Chương 4: RNN & LSTM Tài Chính</button>
-                <button type="button" class="chapter-btn" data-chapter="chuong5">Chương 5: KG & RAG Hỏi Đáp</button>
-                <button type="button" class="chapter-btn active" data-chapter="chuong6">Chương 6: Hệ Đa Agent (MAS)</button>
+            <!-- Thanh Chọn Mô Hình Trí Tuệ Nhân Tạo (Đã bỏ Chương 1, 2) -->
+            <div class="model-nav">
+                <button type="button" class="tab-btn" data-model="cnn">Mạng Tích Chập (CNN)</button>
+                <button type="button" class="tab-btn" data-model="rnn_lstm">Mạng Hồi Quy (RNN / LSTM)</button>
+                <button type="button" class="tab-btn" data-model="kg_rag">Knowledge Graph & RAG</button>
+                <button type="button" class="tab-btn active" data-model="multi_agent">Hệ Đa Agent (Multi-Agent System)</button>
             </div>
 
             <form id="prediction-form">
-                <!-- Dropdown danh mục con (tùy theo chương) -->
+                <!-- Dropdown danh mục con theo từng mô hình -->
                 <div class="form-group" id="subtask-group">
-                    <label for="subtask-select" id="subtask-label">Tác Vụ Nghiên Cứu</label>
+                    <label for="subtask-select" id="subtask-label">Tác Vụ Triển Khai</label>
                     <select id="subtask-select" name="subtask-select" onchange="onSubtaskChange()">
-                        <!-- Cập nhật động theo chương qua JS -->
+                        <!-- Cập nhật động theo mô hình qua JS -->
                     </select>
                 </div>
 
-                <!-- Lựa chọn Mô hình cài đặt -->
+                <!-- Lựa chọn cấu hình thuật toán -->
                 <div class="form-group" id="model-group">
-                    <label id="model-label">Mô Hình / Thuật Toán Triển Khai</label>
+                    <label id="model-label">Mô Hình / Cấu Hình Thuật Toán</label>
                     <div class="radio-group" id="model-radios">
                         <!-- Cập nhật động qua JS -->
                     </div>
                 </div>
 
-                <!-- Vùng chứa input động của từng chương -->
+                <!-- Vùng chứa input động của từng mô hình -->
                 <div id="dynamic-inputs" class="dynamic-inputs">
                     <!-- Được thêm linh hoạt bằng JS -->
                 </div>
 
                 <button type="submit" class="submit-btn" id="submit-btn">
-                    <span>Thực Hiện Thực Nghiệm & Dự Báo</span>
+                    <span>Thực Hiện Dự Báo & Phân Tích</span>
                     <div class="loader"></div>
                 </button>
             </form>
@@ -64,22 +62,23 @@
                     <div class="result-confidence" id="result-confidence-box">
                         Độ tin cậy: <span id="result-confidence">--</span>%
                     </div>
+                    <div id="explanation-box" class="explanation-box hidden"></div>
                 </div>
 
-                <!-- Khung biểu đồ Chart.js -->
+                <!-- Khung biểu đồ Chart.js (Chỉ hiển thị cho RNN/LSTM chuỗi thời gian) -->
                 <div id="chart-container" class="chart-container hidden">
                     <canvas id="predictionChart"></canvas>
                 </div>
 
-                <!-- Vùng chi tiết cho Chương 5 (RAG & KG) -->
+                <!-- Vùng chi tiết cho Knowledge Graph & RAG -->
                 <div id="rag-details" class="rag-panel hidden"></div>
 
-                <!-- Vùng chi tiết cho Chương 6 (Hệ Đa Agent) -->
+                <!-- Vùng chi tiết cho Hệ Đa Agent (MAS) -->
                 <div id="agent-details" class="multi-agent-panel hidden"></div>
             </div>
         </main>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}?v=final_1"></script>
+    <script src="{{ url_for('static', filename='script.js') }}?v=clean_mas_1"></script>
 </body>
 </html>
