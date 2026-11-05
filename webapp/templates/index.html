@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cổng Nghiên Cứu & Dự Đoán AI (Tiểu Luận Final)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=final_1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header-banner">
+            <h1>CỔNG DỰ ĐOÁN & THỰC NGHIỆM AI</h1>
+            <p>Hệ thống toàn diện từ Lịch Sử AI, ML Cổ Điển, CNN, RNN/LSTM, Knowledge Graph + RAG đến Hệ Đa Agent</p>
+        </header>
+
+        <main class="glass-panel">
+            <!-- Thanh Chọn Chương Nghiên Cứu -->
+            <div class="chapter-nav">
+                <button type="button" class="chapter-btn" data-chapter="chuong1">Chương 1: Lịch Sử AI (XOR)</button>
+                <button type="button" class="chapter-btn" data-chapter="chuong2">Chương 2: Học Máy Cổ Điển</button>
+                <button type="button" class="chapter-btn" data-chapter="chuong3">Chương 3: Mạng Tích Chập CNN</button>
+                <button type="button" class="chapter-btn" data-chapter="chuong4">Chương 4: RNN & LSTM Tài Chính</button>
+                <button type="button" class="chapter-btn" data-chapter="chuong5">Chương 5: KG & RAG Hỏi Đáp</button>
+                <button type="button" class="chapter-btn active" data-chapter="chuong6">Chương 6: Hệ Đa Agent (MAS)</button>
+            </div>
+
+            <form id="prediction-form">
+                <!-- Dropdown danh mục con (tùy theo chương) -->
+                <div class="form-group" id="subtask-group">
+                    <label for="subtask-select" id="subtask-label">Tác Vụ Nghiên Cứu</label>
+                    <select id="subtask-select" name="subtask-select" onchange="onSubtaskChange()">
+                        <!-- Cập nhật động theo chương qua JS -->
+                    </select>
+                </div>
+
+                <!-- Lựa chọn Mô hình cài đặt -->
+                <div class="form-group" id="model-group">
+                    <label id="model-label">Mô Hình / Thuật Toán Triển Khai</label>
+                    <div class="radio-group" id="model-radios">
+                        <!-- Cập nhật động qua JS -->
+                    </div>
+                </div>
+
+                <!-- Vùng chứa input động của từng chương -->
+                <div id="dynamic-inputs" class="dynamic-inputs">
+                    <!-- Được thêm linh hoạt bằng JS -->
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    <span>Thực Hiện Thực Nghiệm & Dự Báo</span>
+                    <div class="loader"></div>
+                </button>
+            </form>
+
+            <!-- Vùng hiển thị kết quả -->
+            <div id="result-container" class="result-container hidden">
+                <h3 id="result-title">Kết Quả Phân Tích & Dự Báo</h3>
+                
+                <div class="result-box">
+                    <div class="model-badge" id="model-badge">Mô hình</div>
+                    <div class="result-value" id="result-value">--</div>
+                    <div class="result-confidence" id="result-confidence-box">
+                        Độ tin cậy: <span id="result-confidence">--</span>%
+                    </div>
+                </div>
+
+                <!-- Khung biểu đồ Chart.js -->
+                <div id="chart-container" class="chart-container hidden">
+                    <canvas id="predictionChart"></canvas>
+                </div>
+
+                <!-- Vùng chi tiết cho Chương 5 (RAG & KG) -->
+                <div id="rag-details" class="rag-panel hidden"></div>
+
+                <!-- Vùng chi tiết cho Chương 6 (Hệ Đa Agent) -->
+                <div id="agent-details" class="multi-agent-panel hidden"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}?v=final_1"></script>
+</body>
+</html>
